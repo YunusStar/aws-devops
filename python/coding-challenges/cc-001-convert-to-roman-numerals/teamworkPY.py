@@ -18,7 +18,7 @@ while True:
         if int_number < 4 :
             result = "I"* int_number
         elif int_number == 4 :
-            result = (5-int_number)* "I" + "V"
+            result = "IV"
         elif int_number == 5 :
             result = "V"
         elif int_number > 5 and int_number < 9 :
