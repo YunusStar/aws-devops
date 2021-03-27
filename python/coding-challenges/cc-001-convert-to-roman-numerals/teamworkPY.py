@@ -57,7 +57,7 @@ while True:
             result_4 = "M" * forth_number
             outputlist.append(result_4)
         for i in reversed(outputlist):
-            print(i,sep="", end="")
+            print(i, sep="", end="")
             outputlist = []
     else:
         print("\nNot Valid Input!!")
