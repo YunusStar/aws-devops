@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  This template will create Application Load Balancer with ASG using LT
+Parameters:
+  YunusVPC:
+    Description: VPC Id of your existing account. 
+    Type: AWS::EC2::VPC::Id
+  YunusSubnets:
+    Description: List of subnets ids in your VPC . Please select at least 2 of them
+    Type: List<AWS::EC2::Subnet::Id>
+  KeyName:
+    Description: Select your key pair from the list 
+    Type: AWS::EC2::KeyPair::KeyName
+     
+Mappings:
+  
+
+Resources:
+  YunusSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enables SSH and HTTP ports #required
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref YunusVPC
+  
+  YunusALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 25
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 3
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref YunusVPC
+
+  YunusApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - !GetAtt YunusSecGroup.GroupId
+      Subnets: !Ref YunusSubnets
+
+  YunusListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      # AlpnPolicy:
+      #   - String
+      # Certificates:
+      #   - Certificate
+      DefaultActions: #required
+        - Type: forward
+          TargetGroupArn: !Ref YunusALBTargetGroup
+      LoadBalancerArn: !Ref YunusApplicationLoadBalancer #required
+      Port: 80
+      Protocol: HTTP
+
+  YunusLaunchTemplate:
