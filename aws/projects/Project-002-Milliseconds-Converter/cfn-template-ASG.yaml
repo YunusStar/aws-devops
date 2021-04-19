@@ -5,9 +5,6 @@ Parameters:
   YunusVPC:
     Description: VPC Id of your existing account
     Type: AWS::EC2::VPC::Id
-  YunusSubnets:
-    Description: List of Subnet Ids in your VPC. Please select at least 2 of them.
-    Type: List<AWS::EC2::Subnet::Id>
   KeyName:
     Description: Select your key pair from the list
     Type: AWS::EC2::KeyPair::KeyName
@@ -21,6 +18,20 @@ Parameters:
       - t3a.micro
       - t2.nano
       - t3.nano
+
+Mappings:
+  RegionImageMap:
+    us-east-1:
+      AMI: ami-0742b4e673072066f
+    us-east-2:
+      AMI: ami-05d72852800cbf29e
+    us-west-1:
+      AMI: ami-0577b787189839998
+    us-west-2:
+      AMI: ami-0518bb0e75d3619ca
+    eu-west-1:
+      AMI: ami-0ffea00000f287d30
+
 Resources:
   YunusSecGroup:
     Type: AWS::EC2::SecurityGroup
@@ -77,15 +88,16 @@ Resources:
             yum update -y
             yum install -y python3
             yum install flask -y
-                    cd /home/ec2-user
-        FOLDER="https://raw.githubusercontent.com/serdarcw/Project-001-Roman-Numerals-Converter/master"
-        wget $FOLDER/app.py
-        wget -P templates $FOLDER/templates/index.html
-        wget -P templates $FOLDER/templates/result.html
-        python3 app.py
+            cd /home/ec2-user
+            FOLDER="https://raw.githubusercontent.com/YunusStar/aws-devops/main/aws/projects/Project-002-Milliseconds-Converter/"
+            wget $FOLDER/app.py
+            wget -P templates $FOLDER/templates/index.html
+            wget -P templates $FOLDER/templates/result.html
+            python3 app.py
         SecurityGroupIds:
-          - !Ref CallSecGroup
-        InstanceType: !Ref CallInstanceType
+          - !Ref YunusSecGroup
+        InstanceType: !Ref YunusInstanceType
+
 
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -98,8 +110,17 @@ Resources:
       HealthCheckType: ELB 
       LaunchTemplate:
         LaunchTemplateId: !Ref YunusLaunchTemplate
+        Version: '1'
       LoadBalancerNames:
         - String
       MaxSize: '3' #required
       MinSize: '1' #required
+ 
 
+Outputs:
+  AppURL:
+    Description: URL of Call App
+    Value: !Join 
+      - ''
+      - - 'http://'
+        - !GetAtt ELBofMilliseconds.DNSName
