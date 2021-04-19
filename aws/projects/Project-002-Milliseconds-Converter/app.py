@@ -24,8 +24,8 @@ def main():
             return render_template('index.html', not_valid = True, developer_name = 'Yunus') 
         return render_template('result.html', milliseconds = number, result = convert(number), developer_name = 'Yunus')
     else:
-        return render_template('index.html', not_valid = False, developer_name = 'Serdar')
+        return render_template('index.html', not_valid = False, developer_name = 'Yunus')
 
 if __name__ == '__main__':
     #app.run(debug=True)
-    app.run('0.0.0.0', port='80')
+    app.run('0.0.0.0', port=80)

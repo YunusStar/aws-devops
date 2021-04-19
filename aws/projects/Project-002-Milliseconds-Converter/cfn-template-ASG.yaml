@@ -118,7 +118,7 @@ Resources:
 
 Outputs:
   AppURL:
-    Description: URL of Call App
+    Description: URL of Yunus Milliseconds App
     Value: !Join 
       - ''
       - - 'http://'
