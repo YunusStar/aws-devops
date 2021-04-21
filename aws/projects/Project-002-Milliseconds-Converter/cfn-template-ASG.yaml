@@ -114,7 +114,6 @@ Resources:
       MinSize: '1' #required
       VPCZoneIdentifier: !Ref YunusSubnets
 
- 
 
 Outputs:
   AppURL:
