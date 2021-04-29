@@ -5,7 +5,6 @@ Parameters:
   MyVPC:
     Description: VPC Id of your existing account
     Type: AWS::EC2::VPC::Id
-  
   Subnets:
     Type: List<AWS::EC2::Subnet::Id>
   
@@ -21,6 +20,8 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
+
+
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -76,7 +77,11 @@ Resources:
       MasterUserPassword: Serdar_1
       Engine: MySQL
       EngineVersion: 8.0.19
- 
+      DBName: clarusway_phonebook
+      PubliclyAccessible: true
+      StorageType: gp2
+    DeletionPolicy: Delete
+     
   WebServerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
