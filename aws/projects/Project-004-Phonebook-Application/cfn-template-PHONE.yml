@@ -42,7 +42,7 @@ Resources:
       LaunchTemplateData: 
         ImageId: ami-0742b4e673072066f
         InstanceType: t2.micro
-        KeyName: serdar
+        KeyName: Firstkey
         SecurityGroupIds: 
           - !GetAtt WebServerSecurityGroup.GroupId
         TagSpecifications: 
@@ -51,20 +51,32 @@ Resources:
               - Key: Name
                 Value: !Sub Web Server of ${AWS::StackName} 
         UserData: 
-          Fn::Base64: |
+          Fn::Base64: !Sub  
+           - | 
             #! /bin/bash
             
             yum update -y
             yum install python3 -y
             pip3 install flask
-            TOKEN="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-            FOLDER="https://$TOKEN@raw.githubusercontent.com/serdarcw/Project-002-Milliseconds-Converter/master"
+            URL=${YunusEndpointURL}
+            FOLDER="https://raw.githubusercontent.com/YunusStar/aws-devops/main/aws/projects/Project-004-Phonebook-Application/"
             curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L $FOLDER/templates/index.html
-            curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/result.html
-            curl -s --create-dirs -o "/home/ec2-user/app.py" -L $FOLDER/app.py
-            python3 /home/ec2-user/app.py
-
-
+            curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/delete.html
+            curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/app-update.html
+            curl -s --create-dirs -o "/home/ec2-user/phonebook-app.py" -L $FOLDER/phonebook-app.py
+            echo > /home/ec2-user/dbserver.endpoint URL
+            python3 /home/ec2-user/phonebook-app.py
+           - YunusEndpointURL : !GetAtt RDSinstance.Endpoint.Address 
+  RDSinstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: '30'
+      DBInstanceClass: db.t2.micro #required
+      MasterUsername: admin
+      MasterUserPassword: Serdar_1
+      Engine: MySQL
+      EngineVersion: 8.0.19
+ 
   WebServerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -92,19 +104,19 @@ Resources:
       LoadBalancerArn: !Ref ApplicationLoadBalancer #required
       Port: 80
       Protocol: HTTP
-
+  
   WebServerASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AvailabilityZones: !GetAZs ""
-      DesiredCapacity: 2
+      DesiredCapacity: '2'
       HealthCheckGracePeriod: 90
       HealthCheckType: ELB
       LaunchTemplate:
         LaunchTemplateId: !Ref WebServerLaunchTemplate
         Version: !GetAtt WebServerLaunchTemplate.LatestVersionNumber
-      MaxSize: 3 #required
-      MinSize: 1 #required
+      MaxSize: '3' #required
+      MinSize: '1' #required
       TargetGroupARNs:
         - !Ref WebServerTargetGroup
 
