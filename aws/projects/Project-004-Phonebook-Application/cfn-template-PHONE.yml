@@ -58,7 +58,7 @@ Resources:
             yum update -y
             yum install python3 -y
             pip3 install flask
-            URL=${YunusEndpointURL}
+            export URL=${YunusEndpointURL}
             FOLDER="https://raw.githubusercontent.com/YunusStar/aws-devops/main/aws/projects/Project-004-Phonebook-Application/"
             curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L $FOLDER/templates/index.html
             curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/delete.html
@@ -66,7 +66,7 @@ Resources:
             curl -s --create-dirs -o "/home/ec2-user/phonebook-app.py" -L $FOLDER/phonebook-app.py
             echo > /home/ec2-user/dbserver.endpoint URL
             python3 /home/ec2-user/phonebook-app.py
-           - YunusEndpointURL : !GetAtt RDSinstance.Endpoint.Address 
+           - {YunusEndpointURL : !GetAtt RDSinstance.Endpoint.Address} 
   RDSinstance:
     Type: AWS::RDS::DBInstance
     Properties:
