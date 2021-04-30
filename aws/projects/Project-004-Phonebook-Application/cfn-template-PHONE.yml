@@ -7,7 +7,9 @@ Parameters:
     Type: AWS::EC2::VPC::Id
   Subnets:
     Type: List<AWS::EC2::Subnet::Id>
-  
+  SecGroup:
+    Description: for RDS
+    Type: List<AWS::EC2::SecurityGroup::Id>
 
 Resources:
   ALBSecurityGroup:
@@ -59,13 +61,13 @@ Resources:
             yum update -y
             yum install python3 -y
             pip3 install flask
-            URL=${YunusEndpointURL}
+            pip3 install flask-mysql
             FOLDER="https://raw.githubusercontent.com/YunusStar/aws-devops/main/aws/projects/Project-004-Phonebook-Application/"
             curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L $FOLDER/templates/index.html
             curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/delete.html
             curl -s --create-dirs -o "/home/ec2-user/templates/result.html" -L $FOLDER/templates/app-update.html
             curl -s --create-dirs -o "/home/ec2-user/phonebook-app.py" -L $FOLDER/phonebook-app.py
-            echo URL > /home/ec2-user/dbserver.endpoint 
+            echo ${YunusEndpointURL} > /home/ec2-user/dbserver.endpoint 
             python3 /home/ec2-user/phonebook-app.py
            - {YunusEndpointURL : !GetAtt RDSinstance.Endpoint.Address} 
   RDSinstance:
@@ -79,6 +81,7 @@ Resources:
       EngineVersion: 8.0.19
       DBName: clarusway_phonebook
       PubliclyAccessible: true
+      VPCSecurityGroups: !Ref SecGroup
       StorageType: gp2
     DeletionPolicy: Delete
      
