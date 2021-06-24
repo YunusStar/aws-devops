@@ -10,9 +10,17 @@ List of hands-on trainings within DevOps as follows;
 
 - [Hands-on Docker-03 : Handling Docker Volumes](./Docker/docker-03-handling-volumes/)
 
-# Docker Swarm
+- [Hands-on Docker-04 : Docker Networking](./Docker/docker-04-networking/)
 
-- 
+- [Hands-on Docker-05 : Docker Image Basic Operations](./Docker/docker-05-image-basic-operations/)
+
+- [Hands-on Docker-06 : Docker-06-compose-operations](./Docker/Docker-06-compose-operations/)
+
+- [Hands-on Docker-07 : Dockerize-to-do-app-on-python-flask](./Docker/dockerize-to-do-app-on-python-flask/)
+
+- [Hands-on Docker-08 : Docker Swarm Basic Operations](./Docker/docker-08-swarm-basic-operations/)
+
+- [Hands-on Docker-09 : Docker Swarm Networking Operations](./Docker/docker-09-swarm-networking-managing-services-secrets-stacks/)
 
 # Maven
 
@@ -20,12 +28,18 @@ List of hands-on trainings within DevOps as follows;
 
 # Jenkins
 
-- 
+- [Hands-on Jenkins-01 : Installing Jenkins on Amazon Linux 2 EC2 Instance](./Jenkins/jenkins-01-installing-jenkins/)
+
+- [Hands-on Jenkins-02 : Triggering Jenkins Jobs](./Jenkins/jenkins-02-triggers/)
 
 
 # Kubernetes
 
-- 
+- [Hands-on Kubernetes-01 : Installing Kubernetes on Ubuntu 20.04 running on AWS EC2 Instances](./Kubernetes/kubernetes-01a-installing-on-ec2-linux2/)
+
+- [Hands-on Kubernetes-02 : Kubernetes Basic Operations](./Kubernetes/kubernetes-02-basic-operations/)
+
+- [Hands-on Kubernetes-03 : Kubernetes Networking and Service Discovery](./Kubernetes/kubernetes-03-networking-service-discovery/)
 
 # Terraform
 
